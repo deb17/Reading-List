@@ -1,0 +1,27 @@
+{% extends 'bootstrap/base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block content %}
+<div class="container">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li><h3>{{ message }}</h3></li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+    <h1>Sign In</h1>
+    <div class="row">
+        <div class="col-md-4">
+            {{ wtf.quick_form(form, button_map={'submit': 'primary'}) }}
+        </div>
+    </div>
+    <br>
+    <p>
+        Forgot Your Password?
+        <a href="{{ url_for('reset_password_request') }}">Click to Reset It</a>
+    </p>
+</div>
+{% endblock %}

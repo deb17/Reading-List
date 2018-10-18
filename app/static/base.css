@@ -1,0 +1,41 @@
+body {
+  background-color: #E6FFE6;
+}
+#list {
+  font-family: 'Charmonman', cursive;
+  font-size: 2em;
+}
+#bs-rl-navbar-collapse li {
+  font-size: 1.5em;
+}
+table {
+  table-layout: fixed;
+}
+td:first-child {
+  width: 40%;
+}
+td:nth-child(2) {
+  width: 60%;
+  word-wrap: break-word;
+}
+.detail {
+  margin-right: 20px;
+}
+#detailrow {
+  margin-bottom: 20px;
+}
+#link1, #link2 {
+  background-color: #B3FFB3;
+}
+.others, #list1 li {
+  margin-bottom: 20px;
+}
+#list1 h4:last-child li {
+  margin-bottom: 0px;
+}
+#list1 a {
+  margin-left: 20px;
+}
+#bookform {
+  margin-bottom: 12px;
+}

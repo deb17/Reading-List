@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block app_content %}
+  <h3>What others are reading</h3>
+  <br>
+  {% if books %}
+    {% for book in books %}
+      <h4 class="others"><a href="{{ url_for('detail', list_type='others', id=book.id, page=page)}}">{{ book.title }}</a></h4>
+    {% endfor %}
+    </ol>
+  <div class="row">
+    <div class="col-md-6">
+      <nav aria-label="...">
+          <ul class="pager">
+            {% if prev_url %}
+              <li class="previous">
+                  <a href="{{ prev_url }}" id="link1">
+                      <span aria-hidden="true">&larr;</span> Newer
+                  </a>
+              </li>
+            {% endif %}
+            {% if next_url %}
+              <li class="next">
+                  <a href="{{ next_url }}" id="link2">
+                      Older <span aria-hidden="true">&rarr;</span>
+                  </a>
+              </li>
+            {% endif %}
+          </ul>
+      </nav>
+    </div>
+  </div>
+  {% else %}
+  <h4>No books in this list.</h4>
+  {% endif %}
+{% endblock%}

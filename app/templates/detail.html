@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+
+{% block app_content %}
+{% if list_type != 'others' %}
+<a href="{{ url_for('listview', list_type=list_type, page=page) }}">Back</a>
+{% else %}
+<a href="{{ url_for('others', page=page) }}">Back</a>
+{% endif %}
+<h3>Book details</h3>
+<div class="row" id="detailrow">
+  <div class="col-md-5">
+    <table class="table table-striped">
+      <tr>
+        <td><b>Title</b></td>
+        <td>{{ book.title }}</td>
+      </tr>
+      {% if book.author %}
+      <tr>
+        <td><b>Author</b></td>
+        <td>{{ book.author }}</td>
+      </tr>
+      {% endif %}
+      {% if book.edition %}
+      <tr>
+        <td><b>Edition</b></td>
+        <td>{{ book.edition }}</td>
+      </tr>
+      {% endif %}
+      <tr>
+        <td><b>Format</b></td>
+        <td>{% if book.format == 1 %}Print{% else %}Online{% endif %}</td>
+      </tr>
+      {% if book.about %}
+      <tr>
+        <td><b>About</b></td>
+        <td>{{ book.about }}</td>
+      </tr>
+      {% endif %}
+      <tr>
+        <td><b>Show cover</b></td>
+        <td>
+          {% if book.isbn %}
+          Yes
+          {% else %}
+          No
+          {% endif %}
+        </td>
+      </tr>
+      {% if list_type != 'others' %}
+      <tr>
+        <td><b>In list</b></td>
+        <td>{% if book.list == 1 %}
+            Current
+            {% elif book.list == 2 %}
+            History
+            {% else %}
+            Planned
+            {% endif %}
+        </td>
+      </tr>
+      {% endif %}
+      {% if list_type == 'current' %}
+      <tr>
+        <td><b>Private</b></td>
+        <td>
+          {% if book.private %}
+          Yes
+          {% else %}
+          No
+          {% endif %}
+        </td>
+      </tr>
+      {% endif %}
+    </table>
+    {% if list_type != 'others' %}
+    <div>
+      {% if list_type == 'current' %}
+      <a href="{{ url_for('to_list', list_type=list_type, id=book.id, page=page) }}" class="btn btn-primary detail">Move to history</a>
+      {% elif list_type == 'planned' %}
+      <a href="{{ url_for('to_list', list_type=list_type, id=book.id, page=page) }}" class="btn btn-primary detail">Move to current</a>
+      {% endif %}
+      <a href="{{ url_for('edit', list_type=list_type, id=book.id, page=page) }}" class="btn btn-primary detail">Edit</a>
+      <button type="button" class="btn btn-danger detail" data-toggle="modal" data-target=".bs-delete-modal-sm">Delete</button>
+
+      <div class="modal fade bs-delete-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog modal-sm" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h5 class="modal-title" id="myModalLabel">Confirm Delete</h5>
+            </div>
+            <div class="modal-body"><h4>Delete book info&quest;</h4></div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <a href="{{ url_for('delete', list_type=list_type, id=book.id, page=page) }}" type="button" class="btn btn-danger">Delete</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+  {% if book.isbn %}
+  <div class="col-md-3">
+    <figure>
+      <img class="img-responsive center-block" src="http://covers.openlibrary.org/b/isbn/{{ book.isbn }}-L.jpg">
+      <figcaption class="text-right">Image: <a href="http://openlibrary.org/isbn/{{ book.isbn }}" target="_blank">Open Library</a>
+      </figcaption>
+    </figure>
+  </div>
+  {% endif %}
+</div>
+
+{% endblock%}

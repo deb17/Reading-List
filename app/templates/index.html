@@ -1,0 +1,36 @@
+{% extends 'bootstrap/base.html' %}
+
+{% block styles %}
+{{super()}}
+<link href="https://fonts.googleapis.com/css?family=Charmonman" 
+      rel="stylesheet">
+<style type="text/css">
+  #list {
+    font-family: 'Charmonman', cursive;
+  }
+  .jumbotron {
+    background-color: #87cefa;
+    margin-top: 20px;
+  }
+</style>
+<!-- <link rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"> -->
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="jumbotron">
+    <div class="row">
+      <img class="col-xs-12 visible-xs img-responsive" src="{{ url_for('static', filename='books.jpeg') }}">
+      <div class="col-lg-5 col-sm-6">
+        <h2>Welcome to the </h2>
+        <h1 id="list">Reading list</h1>
+        <h3>A place to keep lists of your books.</h3><br>
+        <p><a class="btn btn-primary btn-lg" href="{{ url_for('login') }}" role="button">Log in</a> |<br class="visible-sm visible-xs"> New User: <a class="btn btn-primary btn-lg" href="{{ url_for('register') }} " role="button">Register</a>
+        </p>
+      </div>
+      <img class="col-lg-5 col-sm-6 hidden-xs img-responsive" src="{{ url_for('static', filename='books.jpeg') }}">
+    </div>
+  </div>
+</div>
+{% endblock %}

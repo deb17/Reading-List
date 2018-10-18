@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block app_content %}
+  {% if list_type == 'current' %}
+  <h1>Hello {{ current_user.username }}&excl;</h1>
+  <h3>You are reading:</h3>
+  {% elif list_type == 'history' %}
+  <h3>You have read:</h3>
+  {% else %}
+  <h3>You plan to read:</h3>
+  {% endif %}
+  <p><a href="{{ url_for('add', list_type=list_type) }}">Add</a></p>
+  <br>
+  {% if books %}
+    <ol id="list1" start="{{ num }}">
+    {% for book in books %}
+      <h4><li><a href="{{ url_for('detail', list_type=list_type, id=book.id, page=page)}}">{{ book.title }}</a></li></h4>
+    {% endfor %}
+    </ol>
+  <div class="row">
+    <div class="col-md-6">
+      <nav aria-label="...">
+          <ul class="pager">
+            {% if prev_url %}
+              <li class="previous">
+                  <a href="{{ prev_url }}" id="link1">
+                      <span aria-hidden="true">&larr;</span> Newer
+                  </a>
+              </li>
+            {% endif %}
+            {% if next_url %}
+              <li class="next">
+                  <a href="{{ next_url }}" id="link2">
+                      Older <span aria-hidden="true">&rarr;</span>
+                  </a>
+              </li>
+            {% endif %}
+          </ul>
+      </nav>
+    </div>
+  </div>
+  {% else %}
+  <h4>No books in this list.</h4>
+  {% endif %}
+{% endblock%}

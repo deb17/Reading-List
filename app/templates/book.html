@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+{% if heading == 'Add' %}
+<a href="{{ url_for('listview', list_type=list_type) }}">Back</a>
+{% elif heading == 'Edit' %}
+<a href="{{ url_for('detail', list_type=list_type, id=id) }}">Back</a>
+{% endif %}
+<h3>{{ heading }} book details:</h3>
+<div><small>&ast; Only &apos;Title&apos; is a required field.</small></div>
+<br>
+<form class="form form-horizontal" method="post" novalidate>
+  {{ form.hidden_tag() }}
+
+  {{ wtf.form_field(form.title, form_type='horizontal', horizontal_columns=('md',1,4)) }}
+  {{ wtf.form_field(form.author, form_type='horizontal', horizontal_columns=('md',1,4)) }}
+  {{ wtf.form_field(form.edition, form_type='horizontal', horizontal_columns=('md',1,1)) }}
+  {{ wtf.form_field(form.format, form_type='horizontal', horizontal_columns=('md',1,2)) }}
+  {{ wtf.form_field(form.about, form_type='horizontal', horizontal_columns=('md',1,4)) }}
+  <div class="row" id="bookform">
+    <div class="col-md-1"></div>
+  {% if list_type == 'current' %}
+    <div class="col-md-1">
+    {{ wtf.form_field(form.private) }}
+    </div>
+  {% endif %}
+    <div class="col-md-3">
+    {{ wtf.form_field(form.cover)}}
+    </div>
+  </div>
+  {% if heading == 'Add' %}
+  {{ wtf.form_field(form.submit1, form_type='horizontal', horizontal_columns=('md',1,2), button_map={'submit1': 'primary'}) }}
+  {% elif heading == 'Edit' %}
+  {{ wtf.form_field(form.submit2, form_type='horizontal', horizontal_columns=('md',1,2), button_map={'submit2': 'primary'}) }}
+  {% endif %}
+</form>
+{% endblock %}

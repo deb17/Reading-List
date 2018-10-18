@@ -1,0 +1,67 @@
+{% extends 'bootstrap/base.html' %}
+
+{% block styles %}
+{{super()}}
+<link href="https://fonts.googleapis.com/css?family=Charmonman" 
+      rel="stylesheet">
+<link rel="stylesheet"
+      href="{{url_for('static', filename='base.css')}}">
+{% endblock %}
+
+{% block navbar %}
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-rl-navbar-collapse" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a id="list" class="navbar-brand" href="{{ url_for('listview', list_type='current') }}">Reading List</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-rl-navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li id="nav-1"><a href="{{ url_for('listview', list_type='current') }}">Current</a></li>
+                    <li id="nav-2"><a href="{{ url_for('listview', list_type='history') }}">History</a></li>
+                    <li id="nav-3"><a href="{{ url_for('listview', list_type='planned') }}">Planned</a></li>
+                    <li id="nav-4"><a href="{{ url_for('others') }}">Others</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                  <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-info" role="alert">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        {# application content needs to be provided in the app_content block #}
+        {% block app_content %}{% endblock %}
+    </div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+    var url = document.URL.split('?')[0];
+    if (url.endsWith('current')) {
+        $('#nav-1').addClass('active');
+    } else if (url.endsWith('history')) {
+        $('#nav-2').addClass('active');
+    } else if (url.endsWith('planned')) {
+        $('#nav-3').addClass('active');
+    } else if (url.endsWith('others')) {
+        $('#nav-4').addClass('active');
+    }
+</script>
+{% endblock %}
