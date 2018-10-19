@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block app_content %}
+<h1>Hello {{ current_user.username }}&excl;</h1>
+<h3>Welcome to your Reading List.</h3>
+<h4>
+  <ul id="home">
+    <li>Organize your books into lists.</li>
+    <li>Add books to any of the lists - <a href="{{ url_for('listview', list_type='current') }}">Current</a>, <a href="{{ url_for('listview', list_type='history') }}">History</a>, <a href="{{ url_for('listview', list_type='planned') }}">Planned</a></li>
+    <li>See what <a href="{{ url_for('others') }}">others</a> are reading.</li>
+    <li>Click on a title in a list to see details.</li>
+  </ul>
+</h4>
+{% endblock%}

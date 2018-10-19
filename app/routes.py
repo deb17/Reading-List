@@ -21,13 +21,13 @@ def check(ltype):
 @app.route('/index')
 def index():
     if current_user.is_authenticated:
-        return redirect(url_for('listview', list_type='current'))
+        return redirect(url_for('home'))
     return render_template('index.html', title='Reading list')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('listview', list_type='current'))
+        return redirect(url_for('home'))
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
@@ -37,7 +37,7 @@ def login():
         login_user(user, remember=form.remember_me.data)
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
-            next_page = url_for('listview', list_type='current')
+            next_page = url_for('home')
         return redirect(next_page)
     return render_template('login.html', title='Sign In', form=form)
 
@@ -51,7 +51,7 @@ def logout():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
-        return redirect(url_for('listview', list_type='current'))
+        return redirect(url_for('home'))
     form = RegistrationForm()
     if form.validate_on_submit():
         user = User(username=form.username.data, email=form.email.data)
@@ -65,7 +65,7 @@ def register():
 @app.route('/reset_password_request', methods=['GET', 'POST'])
 def reset_password_request():
     if current_user.is_authenticated:
-        return redirect(url_for('listview', list_type='current'))
+        return redirect(url_for('home'))
     form = ResetPasswordRequestForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
@@ -79,7 +79,7 @@ def reset_password_request():
 @app.route('/reset_password/<token>', methods=['GET', 'POST'])
 def reset_password(token):
     if current_user.is_authenticated:
-        return redirect(url_for('listview', list_type='current'))
+        return redirect(url_for('home'))
     user = User.verify_reset_password_token(token)
     if not user:
         return redirect(url_for('index'))
@@ -89,7 +89,14 @@ def reset_password(token):
         db.session.commit()
         flash('Your password has been reset.')
         return redirect(url_for('login'))
-    return render_template('reset_password.html', form=form)
+    return render_template('reset_password.html',
+                           title='Reset Password', form=form)
+
+@app.route('/main')
+@login_required
+def home():
+
+    return render_template('home.html', title='Reading list')
 
 @app.route('/list/<list_type>')
 @login_required
@@ -127,6 +134,9 @@ def listview(list_type):
 @login_required
 def detail(list_type, id):
 
+    if list_type != 'others':
+        check(list_type)
+
     book = Book.query.get_or_404(int(id))
     page = request.args.get('page', 1, type=int)
 
@@ -139,7 +149,8 @@ def detail(list_type, id):
                 f'<h2>Error: id {id} not in list {list_type!r}.</h2>'
             ))
 
-    return render_template('detail.html', title='Book details',
+    lis = list_type.capitalize()
+    return render_template('detail.html', title=f'Book details - {lis}',
                            book=book, list_type=list_type, page=page)
 
 @app.route('/<list_type>/add', methods=['GET', 'POST'])
@@ -175,7 +186,8 @@ def add(list_type):
         flash('The book was added to the list.')
         return redirect(url_for('listview', list_type=list_type))
 
-    return render_template('book.html', title='Add book',
+    lis = list_type.capitalize()
+    return render_template('book.html', title=f'Add book - {lis}',
                            form=form, list_type=list_type, heading='Add')
 
 @app.route('/to-list/<list_type>/<id>')
@@ -252,7 +264,8 @@ def edit(list_type, id):
         form.private.data = book.private
         form.cover.data = True if book.isbn else False
 
-    return render_template('book.html', title='Edit book', id=id,
+    lis = list_type.capitalize()
+    return render_template('book.html', title=f'Edit book - {lis}', id=id,
                            form=form, list_type=list_type, heading='Edit')
 
 @app.route('/<list_type>/delete/<id>')

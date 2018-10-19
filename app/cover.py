@@ -10,18 +10,20 @@ def get_isbn(title, author):
     else:
         list_a = [name.strip() for name in author.split(',')]
 
-    search_value = title.replace(' ', '+')
+    # search_value = title.replace(' ', '+')
 
     try:
         api = openlibrary.BookSearch()
-        res = api.get_by_title(search_value)
+        # res = api.get_by_title(search_value)
+        res = api.get_by_title(title)
     except Exception:
         flash('Open Library access error. Cover cannot be shown.')
         return None
     else:
         docs = []
         for doc in res.docs[:10]:
-            if isinstance(doc.first_publish_year, int):
+            if (isinstance(doc.first_publish_year, int) and
+                    doc.lang in ('eng', None)):
                 docs.append(doc)
         docs.sort(key=attrgetter('first_publish_year'), reverse=True)
 

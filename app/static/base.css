@@ -8,6 +8,12 @@ body {
 #bs-rl-navbar-collapse li {
   font-size: 1.5em;
 }
+#home {
+  margin-top: 30px;
+}
+#home li {
+  margin-bottom: 15px;
+}
 table {
   table-layout: fixed;
 }
