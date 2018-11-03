@@ -1,3 +1,5 @@
+from functools import partial
+
 from flask_wtf import FlaskForm
 from flask_wtf.recaptcha import RecaptchaField
 from wtforms import (StringField, PasswordField, BooleanField, SubmitField,
@@ -6,25 +8,24 @@ from wtforms.validators import (ValidationError, DataRequired, Email, EqualTo,
                                 Optional, Length)
 from app.models import User
 
+SF = StringField
+StringField = lambda ml='64': partial(SF, render_kw={'maxlength': ml})
+PasswordField = partial(PasswordField, render_kw={'maxlength': '50'})
+
 class LoginForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()],
-                           render_kw={'maxlength': '64'})
-    password = PasswordField('Password', validators=[DataRequired()],
-                             render_kw={'maxlength': '50'})
+    username = StringField()('Username', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired()])
     remember_me = BooleanField('Remember Me')
     submit = SubmitField('Sign In')
 
 
 class RegistrationForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()],
-                           render_kw={'maxlength': '64'})
-    email = StringField('Email', validators=[DataRequired(), Email()],
-                        render_kw={'maxlength': '120'})
+    username = StringField()('Username', validators=[DataRequired()])
+    email = StringField('120')('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password',
-        validators=[DataRequired(), Length(8)], render_kw={'maxlength': '50'})
+                             validators=[DataRequired(), Length(8)])
     password2 = PasswordField(
-        'Repeat Password', validators=[DataRequired(), EqualTo('password')],
-        render_kw={'maxlength': '50'})
+        'Repeat Password', validators=[DataRequired(), EqualTo('password')])
     recaptcha = RecaptchaField('Captcha')
     submit = SubmitField('Register')
 
@@ -39,24 +40,21 @@ class RegistrationForm(FlaskForm):
             raise ValidationError('Please use a different email address.')
 
 class ResetPasswordRequestForm(FlaskForm):
-    email = StringField('Email', validators=[DataRequired(), Email()],
-                        render_kw={'maxlength': '120'})
+    email = StringField('120')('Email', validators=[DataRequired(), Email()])
     submit = SubmitField('Request Password Reset')
 
 class ResetPasswordForm(FlaskForm):
     password = PasswordField('Password',
-        validators=[DataRequired(), Length(8)], render_kw={'maxlength': '50'})
+                             validators=[DataRequired(), Length(8)])
     password2 = PasswordField(
-        'Repeat Password', validators=[DataRequired(), EqualTo('password')],
-        render_kw={'maxlength': '50'})
+        'Repeat Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Request Password Reset')
 
 msg = 'Will take some time to process.\nTitle should be accurate.'
 
 class BookForm(FlaskForm):
-    title = StringField('Title', validators=[DataRequired()],
-                        render_kw={'maxlength': '150'})
-    author = StringField('Author', render_kw={'maxlength': '150'})
+    title = StringField('150')('Title', validators=[DataRequired()])
+    author = StringField('150')('Author')
     edition = IntegerField('Edition', validators=[Optional()])
     format = SelectField('Format', choices=[('1', 'Print'), ('2', 'Online')])
     about = TextAreaField('About', render_kw={'rows': '4', 'maxlength': '500'})
