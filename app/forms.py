@@ -7,19 +7,24 @@ from wtforms.validators import (ValidationError, DataRequired, Email, EqualTo,
 from app.models import User
 
 class LoginForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired()])
+    username = StringField('Username', validators=[DataRequired()],
+                           render_kw={'maxlength': '64'})
+    password = PasswordField('Password', validators=[DataRequired()],
+                             render_kw={'maxlength': '50'})
     remember_me = BooleanField('Remember Me')
     submit = SubmitField('Sign In')
 
 
 class RegistrationForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired(),
-                                                     Length(8)])
+    username = StringField('Username', validators=[DataRequired()],
+                           render_kw={'maxlength': '64'})
+    email = StringField('Email', validators=[DataRequired(), Email()],
+                        render_kw={'maxlength': '120'})
+    password = PasswordField('Password',
+        validators=[DataRequired(), Length(8)], render_kw={'maxlength': '50'})
     password2 = PasswordField(
-        'Repeat Password', validators=[DataRequired(), EqualTo('password')])
+        'Repeat Password', validators=[DataRequired(), EqualTo('password')],
+        render_kw={'maxlength': '50'})
     recaptcha = RecaptchaField('Captcha')
     submit = SubmitField('Register')
 
@@ -34,14 +39,16 @@ class RegistrationForm(FlaskForm):
             raise ValidationError('Please use a different email address.')
 
 class ResetPasswordRequestForm(FlaskForm):
-    email = StringField('Email', validators=[DataRequired(), Email()])
+    email = StringField('Email', validators=[DataRequired(), Email()],
+                        render_kw={'maxlength': '120'})
     submit = SubmitField('Request Password Reset')
 
 class ResetPasswordForm(FlaskForm):
-    password = PasswordField('Password', validators=[DataRequired(),
-                                                     Length(8)])
+    password = PasswordField('Password',
+        validators=[DataRequired(), Length(8)], render_kw={'maxlength': '50'})
     password2 = PasswordField(
-        'Repeat Password', validators=[DataRequired(), EqualTo('password')])
+        'Repeat Password', validators=[DataRequired(), EqualTo('password')],
+        render_kw={'maxlength': '50'})
     submit = SubmitField('Request Password Reset')
 
 msg = 'Will take some time to process.\nTitle should be accurate.'
