@@ -195,9 +195,11 @@ def edit(list_type, id):
         form.private.data = book.private
         form.cover.data = True if book.isbn else False
 
+    page = request.args.get('page', 1, type=int)
     lis = list_type.capitalize()
     return render_template('book.html', title=f'Edit book - {lis}', id=id,
-                           form=form, list_type=list_type, heading='Edit')
+                           form=form, list_type=list_type, heading='Edit',
+                           page=page)
 
 @app.route('/<list_type>/delete/<id>')
 @login_required

@@ -5,7 +5,7 @@
 {% if heading == 'Add' %}
 <a href="{{ url_for('listview', list_type=list_type) }}">Back</a>
 {% elif heading == 'Edit' %}
-<a href="{{ url_for('detail', list_type=list_type, id=id) }}">Back</a>
+<a href="{{ url_for('detail', list_type=list_type, id=id, page=page) }}">Back</a>
 {% endif %}
 <h3>{{ heading }} book details:</h3>
 <div><small>&ast; Only &apos;Title&apos; is a required field.</small></div>
