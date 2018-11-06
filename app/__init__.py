@@ -5,6 +5,7 @@ from flask_migrate import Migrate
 from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
 from flask_mail import Mail
+from flask_admin import Admin
 
 app = Flask(__name__)
 
@@ -16,4 +17,14 @@ login = LoginManager(app)
 login.login_view = 'login'
 mail = Mail(app)
 
-from app import routes, models
+from app import routes, models, admin as adm
+
+admin = Admin(
+    app,
+    name='Reading List',
+    index_view=adm.RLModelView(models.User, db.session, endpoint='admin',
+                               url='/admin'),
+    template_mode='bootstrap3',
+    base_template='my_master.html'
+)
+admin.add_view(adm.RLModelView(models.Book, db.session))

@@ -17,3 +17,4 @@ class Config(object):
     RECAPTCHA_PRIVATE_KEY = os.environ.get('RECAPTCHA_PRIVATE_KEY') or \
         '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe'
     TITLES_PER_PAGE = 5
+    FLASK_ADMIN_SWATCH = 'cerulean'
