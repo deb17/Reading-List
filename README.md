@@ -1,4 +1,4 @@
-# README
+# Reading List
 
 This is a web-app to manage lists of your books. Its features are:
 
