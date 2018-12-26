@@ -127,7 +127,9 @@ def to_list(list_type, id):
 
     check(list_type)
     if list_type == 'history': abort(404)
-    book = Book.query.get_or_404(id)
+    book = Book.query.get_or_404(int(id))
+    if book.user_id != current_user.id:
+        abort(401)
 
     if list_type == 'current':
         book.list = 2
@@ -149,7 +151,10 @@ def to_list(list_type, id):
 def edit(list_type, id):
 
     check(list_type)
-    book = Book.query.get_or_404(id)
+    book = Book.query.get_or_404(int(id))
+    if book.user_id != current_user.id:
+        abort(401)
+
     form = BookForm()
 
     if form.validate_on_submit():
@@ -206,7 +211,10 @@ def edit(list_type, id):
 def delete(list_type, id):
 
     check(list_type)
-    book = Book.query.get_or_404(id)
+    book = Book.query.get_or_404(int(id))
+    if book.user_id != current_user.id:
+        abort(401)
+
     db.session.delete(book)
     db.session.commit()
 
