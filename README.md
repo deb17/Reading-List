@@ -1,6 +1,6 @@
-# README
+# Reading List
 
-This is a web-app to manage lists of your books. Its features are:
+This is a Flask web-app to manage lists of your books. Its features are:
 
 - Different lists for books that you are currently reading, have read or plan to read.
 - Look for book cover on Open Library.
