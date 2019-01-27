@@ -11,7 +11,7 @@ class Config(object):
     MAIL_USE_TLS = os.environ.get('MAIL_USE_TLS') is not None
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
-    ADMINS = ['debs.readinglist@gmail.com']
+    ADMINS = ['debs.readinglist@outlook.com']
     RECAPTCHA_PUBLIC_KEY = os.environ.get('RECAPTCHA_PUBLIC_KEY') or \
         '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'
     RECAPTCHA_PRIVATE_KEY = os.environ.get('RECAPTCHA_PRIVATE_KEY') or \
